@@ -34,6 +34,45 @@ const listClientes = () => {
   return promise;
 }*/
 
+const crearCliente = (nombre, email) => {
+  const id = uuid.v4();
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({nombre, email, id})
+  }
+
+  return fetch("http://localhost:3000/perfil", options)
+}
+
+const eliminarCliente = (id) => {
+  const options = {
+    method: "DELETE"
+  }
+  return fetch(`http://localhost:3000/perfil/${id}`, options)
+}
+
+const detalleCliente = (id) => {
+  return fetch(`http://localhost:3000/perfil/${id}`).then(respuesta => respuesta.json())
+}
+
+const actualizarCliente = (nombre, email, id) => {
+  const options = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ nombre, email })
+  }
+  return fetch(`http://localhost:3000/perfil/${id}`, options).then(respuesta => respuesta).catch(error => console.log(error.message))
+}
+
 export const clientServices = {
   listClientes,
+  crearCliente,
+  eliminarCliente,
+  detalleCliente,
+  actualizarCliente,
 }

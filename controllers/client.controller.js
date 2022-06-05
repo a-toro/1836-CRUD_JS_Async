@@ -1,8 +1,6 @@
 import { clientServices } from "../service/client-service.js";
 
-console.log(clientServices)
-
-const createNewLine = (nombre, email) => {
+const createNewLine = (nombre, email, id) => {
     const linea = document.createElement("tr");
     const contenido = `
       <td class="td" data-td>
@@ -13,14 +11,14 @@ const createNewLine = (nombre, email) => {
         <ul class="table__button-control">
           <li>
             <a
-              href="../screens/editar_cliente.html"
+              href="../screens/editar_cliente.html?id=${id}"
               class="simple-button simple-button--edit"
             >
               Editar
             </a>
           </li>
           <li>
-            <button class="simple-button simple-button--delete" type="button">
+            <button class="simple-button simple-button--delete" type="button" id="${id}">
               Eliminar
             </button>
           </li>
@@ -28,6 +26,14 @@ const createNewLine = (nombre, email) => {
       </td>
     `;
     linea.innerHTML = contenido;
+    const btnDelete = linea.querySelector("button");
+    btnDelete.addEventListener('click',  () => {
+      const id = btnDelete.id;
+      clientServices.eliminarCliente(id)
+        .then(respuesta => console.log(respuesta))
+        .catch(error => alert(error.message))
+    })
+
     return linea;
   }
   
@@ -35,8 +41,8 @@ const createNewLine = (nombre, email) => {
 
   clientServices.listClientes()
   .then(data =>{
-    data.forEach(perfil => {
-      const newLine = createNewLine(perfil.nombre, perfil.email);
+    data.forEach(({nombre, email, id}) => {
+      const newLine = createNewLine(nombre, email, id);
       table.appendChild(newLine);
     });
   }   
