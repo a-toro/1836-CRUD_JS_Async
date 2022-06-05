@@ -1,4 +1,5 @@
-const createNewLine = (nombre, email) => {
+//backticks
+const crearNuevaLinea = (nombre, email) => {
   const linea = document.createElement("tr");
   const contenido = `
     <td class="td" data-td>
@@ -25,50 +26,47 @@ const createNewLine = (nombre, email) => {
   `;
   linea.innerHTML = contenido;
   return linea;
-}
+};
+
+
 
 const table = document.querySelector("[data-table]");
 
+//Abrir http (método,url)
 
-// Abri http (método, url)
-/*
-  CRUD   - MÉTODOS HTTP
-  Creater - POST
-  Read - GET
-  Update - PUT/PATCH
-  Delete - DELETE
-*/
+// CRUD   - Métodos HTTP
+// Create - POST
+// Read   - GET
+// Update - PUT/PATCH
+// Delete - DELETE
 
-// Obtener datos con Fecth API
-const listClientes = () => fetch("http://localhost:3000/perfil").then(response => response.json());
-
-
-/*
-Obtener los datos con HTTP request y promise
-const listClientes = () => {
+const listaClientes = () => {
   const promise = new Promise((resolve, reject) => {
     const http = new XMLHttpRequest();
-    http.open('GET', 'http://localhost:3000/perfil');
-    http.send() // Enviar la petición
+    http.open("GET", "http://localhost:3000/perfil");
+
+    http.send();
+
     http.onload = () => {
       const response = JSON.parse(http.response);
-      if ( http.status >= 400){
+      if (http.status >= 400) {
         reject(response);
       } else {
         resolve(response);
       }
-    }
-
-  })
+    };
+  });
   return promise;
-}*/
+};
 
-listClientes()
-  .then(data =>{
-    data.forEach(perfil => {
-      const newLine = createNewLine(perfil.nombre, perfil.email);
-      table.appendChild(newLine);
+listaClientes()
+  .then((data) => {
+    data.forEach((perfil) => {
+      const nuevaLinea = crearNuevaLinea(perfil.nombre, perfil.email);
+      table.appendChild(nuevaLinea);
     });
-  }   
-)
-  .catch(error => alert(error))
+  })
+  .catch((error) => alert("Ocurrió un error"));
+
+// console.log(data);
+//
